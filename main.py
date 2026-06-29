@@ -21,4 +21,7 @@ def login(username, password):
         page.wait_for_selector(".button-spinner", state="hidden")
 
         error = page.get_by_text(INVALID_LOGIN_ERROR).text_content()
+
+        browser.close()
+        
         return error
