@@ -10,15 +10,16 @@ INVALID_LOGIN_ERROR = "Invalid login or password."
 
 @pytest.fixture()
 def page():
-    with sync_playwright() as p:
-        # Запуск браузера
-        browser = p.chromium.launch()
-        page = browser.new_page()
+    playwright = sync_playwright().start()
+    # Запуск браузера
+    browser = playwright.chromium.launch()
+    page = browser.new_page()
 
-        yield page
-        # Закрываем браузер
-        browser.close()
+    yield page
+    # Закрываем браузер
+    browser.close()
 
+    playwright.stop()
 
 def test_login(page):
     fake = Faker()
@@ -28,15 +29,16 @@ def test_login(page):
     # Открываем страницу приложения
     page.goto(BASE_URL)
     # Нажимаем кнопку Login
-    page.get_by_role("link", name="Login").click()
+    page.get_by_test_id("nav-login").click()
     # Заполняем поле Логин и Пароль
     page.fill("#username", username)
     page.fill("#password", password)
     # Подтверждаем вход
-    page.get_by_role("button", name="Confirm").click()
+    page.get_by_test_id("login-submit").click()
     # Ждём появления и исчезновения
-    page.wait_for_selector(".button-spinner", state="visible")
-    page.wait_for_selector(".button-spinner", state="hidden")
+    spinner = page.locator(".button-spinner")
+    spinner.wait_for(state="visible")
+    spinner.wait_for(state="hidden")
     # Получаем текст ошибки
     error = page.get_by_text(INVALID_LOGIN_ERROR).text_content()
     assert error == INVALID_LOGIN_ERROR, (
