@@ -1,5 +1,3 @@
-import pytest
-from playwright.sync_api import sync_playwright
 from faker import Faker
 
 # URL тестируемого сайта
@@ -7,19 +5,6 @@ BASE_URL = "http://144.31.63.127:5000/"
 # текст ошибки при неверном вводе данных
 INVALID_LOGIN_ERROR = "Invalid login or password."
 
-
-@pytest.fixture()
-def page():
-    playwright = sync_playwright().start()
-    # Запуск браузера
-    browser = playwright.chromium.launch()
-    page = browser.new_page()
-
-    yield page
-    # Закрываем браузер
-    browser.close()
-
-    playwright.stop()
 
 def test_login(page):
     fake = Faker()
@@ -36,7 +21,7 @@ def test_login(page):
     # Подтверждаем вход
     page.get_by_test_id("login-submit").click()
     # Ждём появления и исчезновения
-    spinner = page.locator(".button-spinner")
+    spinner = page.get_by_test_id("login-submit-spinner")
     spinner.wait_for(state="visible")
     spinner.wait_for(state="hidden")
     # Получаем текст ошибки
