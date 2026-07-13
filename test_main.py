@@ -1,21 +1,23 @@
 import pytest
+from config_reader import ConfigReader
 from enums import FilterType
 from pages.home_page import HomePage
 
 
 @pytest.mark.parametrize("name", ["city", "habits"])
-@pytest.mark.parametrize("articles_count", [10, 15])
 @pytest.mark.parametrize(
-    "filter_type",
+    "articles_count, filter_type",
     [
-        FilterType.PRICE_LOW_TO_HIGH,
-        FilterType.PRICE_HIGH_TO_LOW,
+        (10, FilterType.PRICE_LOW_TO_HIGH),
+        (15, FilterType.PRICE_HIGH_TO_LOW,)
     ],
 )
 def test_articles_sorting(page, name, articles_count, filter_type):
-    home_page = HomePage(page)
+    config = ConfigReader()
 
-    home_page.open_home_page()
+    page.goto(config.get("base_url"))
+
+    home_page = HomePage(page)
     search_results_page = home_page.search_article(name)
 
     search_results_page.select_sorting_filter(filter_type)

@@ -1,11 +1,13 @@
 import json
 from pathlib import Path
 
+CONFIG_PATH = "config.json"
+
 
 class ConfigReader:
     _instances = {}
 
-    def __new__(cls, config_path="config.json"):
+    def __new__(cls, config_path=CONFIG_PATH):
         config_path = Path(config_path).resolve()
 
         if config_path not in cls._instances:
