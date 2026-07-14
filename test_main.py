@@ -1,6 +1,6 @@
 import pytest
 from config_reader import ConfigReader
-from enums import FilterType
+from pages.search_page import FilterType
 from pages.home_page import HomePage
 
 

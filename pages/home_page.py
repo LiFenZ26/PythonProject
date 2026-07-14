@@ -8,6 +8,7 @@ class HomePage(BasePage):
 
         self.search_input = page.get_by_test_id("search-input")
         self.search_button = page.get_by_test_id("search-button")
+
     def search_article(self, name):
         self.search_input.fill(name)
         self.search_button.click()

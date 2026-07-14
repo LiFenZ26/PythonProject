@@ -1,5 +1,11 @@
+from enum import StrEnum
 from pages.base_page import BasePage
 
+
+class FilterType(StrEnum):
+    PRICE_LOW_TO_HIGH = "Price: low to high"
+    PRICE_HIGH_TO_LOW = "Price: high to low"
+    
 
 class SearchResultsPage(BasePage):
     def __init__(self, page):
@@ -10,6 +16,7 @@ class SearchResultsPage(BasePage):
         self.article_prices = page.locator(
             "[data-testid^='search-result-price-']"
         )
+
     def select_sorting_filter(self, filter_type):
         self.sorting_filter.select_option(label=filter_type.value)
         self.wait_results_loaded()
@@ -21,9 +28,8 @@ class SearchResultsPage(BasePage):
     def get_first_article_prices(self, articles_count):
         prices = []
 
-        for price_locator in  self.article_prices.all()[:articles_count]:
+        for price_locator in self.article_prices.all()[:articles_count]:
             price = int(price_locator.get_attribute("data-price"))
-            price_rub = price // 100
-            prices.append(price_rub)
+            prices.append(price)
 
         return prices
