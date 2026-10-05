@@ -3,6 +3,7 @@ from ui.page_actions import PageActions
 from utils.url_utils import embed_credentials_in_url
 from ui.web_element import WebElement
 
+
 class BasicAuthPage:
     def __init__(self, page: Page) -> None:
         self.page = page
@@ -10,6 +11,7 @@ class BasicAuthPage:
         self.message = WebElement(
             self.page.locator("#content p"),
             description="Basic auth -> Message")
+
     def open(self, url: str, username: str, password: str) -> None:
         url = embed_credentials_in_url(url, username, password)
         self.actions.goto(url)
