@@ -3,6 +3,7 @@ from ui.page_actions import PageActions
 from ui.web_element import WebElement
 import random
 
+
 class SliderPage:
     def __init__(self, page: Page) -> None:
         self.page = page
@@ -25,5 +26,6 @@ class SliderPage:
         for _ in range(press_count):
             self.slider.press("ArrowRight")
         return value
+
     def get_value(self) -> str:
         return self.value.get_inner_text()

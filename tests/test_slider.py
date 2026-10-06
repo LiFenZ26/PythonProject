@@ -1,5 +1,6 @@
 from pages.page_slider import SliderPage
 
+
 def test_page_slider(page):
     url = "http://the-internet.herokuapp.com/horizontal_slider"
     slider_page = SliderPage(page)
